@@ -1,60 +1,51 @@
 """
-TODO:
-Add checks?
-Are there more parameters?
-Document
+Build appropriate requests for WCS2 requests.
 
 """
 import xml.dom.minidom as dom
 from wcs.builders.param_checks import Checks
 
 def build_getCapabilities_req():
-    """
-
-    """
     return {"REQUEST" : "GetCapabilities"}
 
 def build_describeCoverageCollection_req(collection_id, ref_time):
-    """
-
-    """
     return {"REQUEST" : "DescribeCoverageCollection",
             "CoverageCollectionId" : collection_id,
             "ReferenceTime" : ref_time}
 
 def build_describeCoverage_req(coverage_id):
-    """
-
-    """
-    xml = """<?xml version="1.0" encoding="UTF-8"?>
-          <DescribeCoverage xmlns="http://www.opengis.net/wcs/2.0"
-                            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                            xsi:schemaLocation="http://www.opengis.net/wcs/2.0 http://schemas.opengis.net/wcs/2.0/wcsAll.xsd"
-                            service="WCS" version="2.0.0">
-              <CoverageId>{cov_id}</CoverageId>
-          </DescribeCoverage>""".format(cov_id=coverage_id)
-    return xml
+    return """
+    <?xml version="1.0" encoding="UTF-8"?>
+        <DescribeCoverage xmlns="http://www.opengis.net/wcs/2.0"
+                          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                          xsi:schemaLocation="http://www.opengis.net/wcs/2.0
+                                http://schemas.opengis.net/wcs/2.0/wcsAll.xsd"
+                          service="WCS" version="2.0.0">
+            <CoverageId>{cov_id}</CoverageId>
+        </DescribeCoverage>""".format(cov_id=coverage_id)
 
 def build_getCoverage_req(coverage_id, components, format=None, elevation=None,
-                          bbox=None, time=None, dim_forecast=None, width=None,
-                          height=None, interpolation=None):
+                          bbox=None, time=None, width=None, height=None,
+                          interpolation=None):
     """
-    Create a dictionary of valid parameters for getCoverage method. The
-    parameters format, crs and elevation must be specified for a valid
-    request. Use describeCoverage to print out avaiable options for these.
+    Create an XML document of valid parameters for getCoverage method.
 
     Notes:
 
-    When specifing times; dim_run, time and dim_forecast cannot all be
-    given (even if they fit). Only a maximum of two can be specified.
-
-    When specifying resolutions, width and height specify how many grid
-    boxes are returned, the size of the boxes is consequential. resx and
-    resy specify the size of the grid boxes and the number of grid boxes
-    is consequential. They can not be used together (even if the fit).
-
     This method does not verify if the given parameters are available, it
     only asserts correct formats.
+
+    For parameters elevation and time, providing a list means you are
+    specifying bounds, where a string means you are specifying a single level
+    or time point.
+
+    Args:
+
+    * coverage_id: string
+        Name of coverage
+
+    * components: string or list
+        Components of the coverage.
 
     Kwargs:
 
@@ -67,15 +58,10 @@ def build_getCoverage_req(coverage_id, components, format=None, elevation=None,
     * bbox: list
         Must contain 4 values in the format [x-min, y-min, x-max, y-max].
         Values can be given as integers, floats or strings. Default is the
-        entire field is returned.
+        entire field.
 
     * time: string or list
-        The forecast time. Default is the first forecast time.
-
-    * dim_forecast: string
-        The time releative to the dim_run e.g. PT36H is 36 hours from the
-        model run time. Default is PT0H (unless dim_run AND time are
-        given). It is valid to provide just the number.
+        The forecast time.
 
     * width/height: integer
         The number of gridpoints in the x (width) and y (height) within
@@ -92,14 +78,16 @@ def build_getCoverage_req(coverage_id, components, format=None, elevation=None,
     checker = Checks()
 
     req.setCoverageId(coverage_id)
-    req.setComponents(components)
+    if isinstance(components, string):
+        components = [components]
+    req.setComponents(*components)
 
     if format:
         req.setFormat(format)
 
     if elevation:
         if isinstance(elevation, list):
-            req.setLevelRange(min(elevation), max(elevation))
+            req.setLevelRange(elevation[0], elevation[1])
         else:
             req.setLevel(elevation)
 
@@ -110,16 +98,14 @@ def build_getCoverage_req(coverage_id, components, format=None, elevation=None,
 
     if time:
         if isinstance(time, list):
+            assert len(time) == 2, "Provide a list of 2 values if specifing "\
+                                   "bounds."
             time_min = checker.sort_time(time[0])
             time_max = checker.sort_time(time[1])
             req.setTimeRange(time_min, time_max)
         else:
             time = checker.sort_time(time)
             req.setTime(time)
-
-    if dim_forecast:
-        checker.check_dim_forecast(dim_forecast)
-        # something to calculate this.
 
     # Resolution parameters.
     if not interpolation:
@@ -137,6 +123,7 @@ def build_getCoverage_req(coverage_id, components, format=None, elevation=None,
 
 class GetCoverageRequestBuilder(object):
     """
+    Class for setting getCoverage request parameters.
 
     """
     def __init__(self):
@@ -153,131 +140,203 @@ class GetCoverageRequestBuilder(object):
 
     def setComponents(self, *components):
         """
-        @param components: strings
+        Args:
+
+        * components: strings
+
         """
         self.components = components
 
     def addComponents(self, *components):
         """
-        @param components: strings
+        Args:
+
+        * components: strings
+
         """
         newComponents = list(set(self.components + components))
         self.components = newComponents
 
     def removeComponents(self, *components):
         """
-        @param components: strings
+        Args:
+
+        * components: strings
+
         """
         newComponents = [c for c in self.components if not c in components]
         self.components = newComponents
 
     def setCRS(self, crs, value):
         """
-        @param crs: string (crs0, crs1, crs2, crs3)
-        @param value: string
+        Args:
+
+        * crs: string (crs0, crs1, crs2, crs3)
+
+        * value: string
+
         """
         self.crs_dict[crs] = value
 
     def setInterpolation(self, dimension, method=None, samplesize=None):
         """
-        @param dimension: string
-        @param method: string
-        @param samplesize: int
+        Args:
+
+        * dimension: string
+
+        * method: string
+
+        * samplesize: int
+
         """
         self.interpolation_dict[dimension] = (method, samplesize)
 
     def setCoverageId(self, id):
         """
-        @param id: string
+        Args:
+
+        * id: string
+
         """
         self.coverageId = id
 
     def setLat(self, value, unit=None):
         """
-        @param value: string, float
-        @param unit: string
+        Args:
+
+        * value: string, float
+
+        * unit: string
+
         """
         self.lat = {'type':'slice', 'value':value, 'unit':unit}
 
     def setLong(self, value, unit=None):
         """
-        @param value: string, float
-        @param unit: string
+        Args:
+
+        * value: string, float
+
+        * unit: string
+
         """
         self.long = {'type':'slice', 'value':value, 'unit':unit}
 
     def setLatRange(self, start, end, unit=None):
         """
-        @param start: string, float
-        @param end: string, float
-        @param unit: string
+        Args:
+
+        * start: string, float
+
+        * end: string, float
+
+        * unit: string
+
         """
         self.lat = {'type':'trim', 'low':start, 'high':end, 'unit':unit}
 
     def setLongRange(self, start, end, unit=None):
         """
-        @param start: string, float
-        @param end: string, float
-        @param unit: string
+        Args:
+
+        * start: string, float
+
+        * end: string, float
+
+        * unit: string
+
         """
         self.long = {'type':'trim', 'low':start, 'high':end, 'unit':unit}
 
     def setLevel(self, value, unit=None):
         """
-        @param value: string, float
-        @param unit: string
+        Args:
+
+        * value: string, float
+
+        * unit: string
+
         """
         self.IsobaricSurface = {'type':'slice', 'value':value, 'unit':unit}
 
     def setLevelRange(self, start, end, unit=None):
         """
-        @param start: string, float
-        @param end: string, float
-        @param unit: string
+        Args:
+
+        * start: string, float
+
+        * end: string, float
+
+        * unit: string
+
         """
         self.IsobaricSurface = {'type':'trim', 'low':start, 'high':end, 'unit':unit}
 
     def setTime(self, value, unit=None):
         """
-        @param value: string, float
-        @param unit: string
+        Args:
+
+        * value: string, float
+
+        * unit: string
+
         """
         self.ValidityTime = {'type':'slice', 'value':value, 'unit':unit}
 
     def setTimeRange(self, start, end, unit=None):
         """
-        @param start: string, float
-        @param end: string, float
-        @param unit: string
+        Args:
+
+        * start: string, float
+
+        * end: string, float
+
+        * unit: string
+
         """
         self.ValidityTime = {'type':'trim', 'low':start, 'high':end, 'unit':unit}
 
     def setFormat(self, format):
         """
-        @param format: string
+        Args:
+
+        * format: string
+
         """
         self.format = format
 
     def setMediaType(self, type):
         """
-        @param type: string
+        Args:
+
+        * type: string
+
         """
         self.mediaType = type
 
     def setWCSLocation(self, address):
         """
-        @param address: string
+        Args:
+
+        * address: string
+
         """
         self.wcs_location = address
 
     def toXML(self):
         """
-        @param writer: RequestWriter
+        Write out all parameters to XML.
+
         """
         return GetCoverageRequestWriter().returnXml(self)
 
     def saveXML(self, filename):
         """
+        Write out all parameters to XML and save.
+
+        Args:
+
+        * filename: string
 
         """
         xml = self.toXML()
@@ -286,6 +345,10 @@ class GetCoverageRequestBuilder(object):
 
 
 class GetCoverageRequestWriter(dom.Document):
+    """
+    Write XML specifically for getCoverage request.
+
+    """
     def __init__(self):
         dom.Document.__init__(self)
         self.xlink = "http://www.w3.org/1999/xlink"
@@ -303,29 +366,48 @@ class GetCoverageRequestWriter(dom.Document):
 
     def _mkAttribute(self, name, value):
         """
-        @param name: string
-        @param value: string, float
+        Args:
+
+        * name: string
+
+        * value: string, float
+
         """
         attr = self.createAttribute(name)
         attr.value = value
         return attr
 
     def mkRangeComponentNode(self, component):
-        """@param component: string"""
+        """
+        Args:
+
+        * component: string
+
+        """
         textNode = self.createTextNode(component)
         rangeComponentNode = self.createElementNS(self.rsub, 'rsub:rangeComponent')
         rangeComponentNode.appendChild(textNode)
         return rangeComponentNode
 
     def mkRangeSubsetNode(self, *components):
-        """@param components: rangeComponentNodes"""
+        """
+        Args:
+
+        * components: rangeComponentNodes
+
+        """
         rangeSubsetNode = self.createElementNS(self.rsub, 'rsub:rangeSubset')
         for rangeComponentNode in components:
             rangeSubsetNode.appendChild(rangeComponentNode)
         return rangeSubsetNode
 
     def mkSubsettingCrsNode(self, crs0=None, crs1=None, crs2=None, crs3=None):
-        """@param crs*: string or None"""
+        """
+        Args:
+
+        * crs#: string or None
+
+        """
         crsstring = ""
         crsstring += crs0 if crs0!=None else self.crs0
         crsstring += '\n1='
@@ -341,7 +423,10 @@ class GetCoverageRequestWriter(dom.Document):
 
     def mkGetCoverageCrsNode(self, subsettingCrs):
         """
-        @param subsettingCrs: subsettingCrsNode
+        Args:
+
+        * subsettingCrs: subsettingCrsNode
+
         """
         getCoverageCrsNode = self.createElementNS(self.wcsCRS, 'wcsCRS:GetCoverageCrs')
         getCoverageCrsNode.appendChild(subsettingCrs)
@@ -349,8 +434,12 @@ class GetCoverageRequestWriter(dom.Document):
 
     def _mkInterpolationMethodAttribute(self, method, samplesize):
         """
-        @param method: string
-        @param samplesize: int
+        Args:
+
+        * method: string
+
+        * samplesize: int
+
         """
         if samplesize != None:
             method += '/samplesize=%d'%(samplesize)
@@ -359,9 +448,14 @@ class GetCoverageRequestWriter(dom.Document):
 
     def mkInterpolationAxisNode(self, axis, interpolation, samplesize=None):
         """
-        @param axis: string
-        @param interpolation: string
-        @param samplesize: int
+        Args:
+
+        * axis: string
+
+        * interpolation: string
+
+        * samplesize: int
+
         """
         axisAttribute = self._mkAttribute('axis', axis)
         interpolationMethodAttribute = self._mkInterpolationMethodAttribute(interpolation, samplesize)
@@ -371,23 +465,38 @@ class GetCoverageRequestWriter(dom.Document):
         return interpolationAxisNode
 
     def mkInterpolationAxesNode(self, *axes):
-        """@param axes: interpolationAxisNodes"""
+        """
+        Args:
+
+        * axes: interpolationAxisNodes
+
+        """
         interpolationAxesNode = self.createElementNS(self.int, 'int:InterpolationAxes')
         for axisNode in axes:
             interpolationAxesNode.appendChild(axisNode)
         return interpolationAxesNode
 
     def mkInterpolationNode(self, interpolationAxesNode):
-        """@param interpolationAxesNode: interpolationAxesNode"""
+        """
+        Args:
+
+        * interpolationAxesNode: interpolationAxesNode
+
+        """
         interpolationNode = self.createElementNS(self.int, 'int:Interpolation')
         interpolationNode.appendChild(interpolationAxesNode)
         return interpolationNode
 
     def mkExtensionNode(self, rangeSubset, getCoverageCrs, interpolation):
         """
-        @param rangeSubset: rangeSubsetNode
-        @param getCoverageCrs: getCoverageCrsNode
-        @param interpolation: interpolationNode
+        Args:
+
+        * rangeSubset: rangeSubsetNode
+
+        * getCoverageCrs: getCoverageCrsNode
+
+        * interpolation: interpolationNode
+
         """
         extensionNode = self.createElementNS(self.wcs, 'wcs:Extension')
         extensionNode.appendChild(rangeSubset)
@@ -396,14 +505,24 @@ class GetCoverageRequestWriter(dom.Document):
         return extensionNode
 
     def mkCoverageIdNode(self, id):
-        """@param id: string"""
+        """
+        Args:
+
+        * id: string
+
+        """
         idNode = self.createTextNode(id)
         coverageIdNode = self.createElementNS(self.wcs, 'wcs:CoverageId')
         coverageIdNode.appendChild(idNode)
         return coverageIdNode
 
     def mkDimensionNode(self, dim):
-        """@param dim: string"""
+        """
+        Args:
+
+        * dim: string
+
+        """
         dimNode = self.createTextNode(dim)
         dimensionNode = self.createElementNS(self.wcs, 'wcs:Dimension')
         dimensionNode.appendChild(dimNode)
@@ -411,9 +530,14 @@ class GetCoverageRequestWriter(dom.Document):
 
     def _mkTrimNode(self, trim, value, unit=None):
         """
-        @param trim: string
-        @param value: string, float
-        @param unit: string
+        Args:
+
+        * trim: string
+
+        * value: string, float
+
+        * unit: string
+
         """
         trim = 'metocean:'+trim
         valNode = self.createTextNode(str(value))
@@ -426,23 +550,36 @@ class GetCoverageRequestWriter(dom.Document):
 
     def mkTrimLowNode(self, value, unit):
         """
-        @param value: string, float
-        @param unit: string
+        Args:
+
+        * value: string, float
+
+        * unit: string
+
         """
         return self._mkTrimNode('TrimLow', value, unit)
 
     def mkTrimHighNode(self, value, unit):
         """
-        @param value: string, float
-        @param unit: string
+        Args:
+
+        * value: string, float
+
+        * unit: string
+
         """
         return self._mkTrimNode('TrimHigh', value, unit)
 
     def mkDimensionTrimNode(self, dim, low, high):
         """
-        @param dim: dimensionNode
-        @param low: trimLowNode
-        @param high: trimHighNode
+        Args:
+
+        * dim: dimensionNode
+
+        * low: trimLowNode
+
+        * high: trimHighNode
+
         """
         dimensionTrimNode = self.createElementNS(self.metocean, 'metocean:DimensionTrim')
         dimensionTrimNode.appendChild(dim)
@@ -452,7 +589,10 @@ class GetCoverageRequestWriter(dom.Document):
 
     def mkSlicePointNode(self, value, unit):
         """
-        @param value: string, float
+        Args:
+
+        * value: string, float
+
         """
         valNode = self.createTextNode(str(value))
         slicePointNode = self.createElementNS(self.metocean, 'metocean:SlicePoint')
@@ -464,8 +604,12 @@ class GetCoverageRequestWriter(dom.Document):
 
     def mkDimensionSliceNode(self, dim, slicepoint):
         """
-        @param dim: dimensionNode
-        @param slicepoint: slicePointNode
+        Args:
+
+        * dim: dimensionNode
+
+        * slicepoint: slicePointNode
+
         """
         dimensionSliceNode = self.createElementNS(self.metocean, 'metocean:DimensionSlice')
         dimensionSliceNode.appendChild(dim)
@@ -474,7 +618,10 @@ class GetCoverageRequestWriter(dom.Document):
 
     def mkFormatNode(self, format):
         """
-        @param format: string
+        Args:
+
+        * format: string
+
         """
         textNode = self.createTextNode(format)
         formatNode = self.createElementNS(self.wcs, 'wcs:format')
@@ -483,7 +630,10 @@ class GetCoverageRequestWriter(dom.Document):
 
     def mkMediaTypeNode(self, type):
         """
-        @param type: string
+        Args:
+
+        * type: string
+
         """
         typeNode = self.createTextNode(type)
         mediaTypeNode = self.createElementNS(self.wcs, 'wcs:mediaType')
@@ -492,12 +642,20 @@ class GetCoverageRequestWriter(dom.Document):
 
     def mkGetCoverageNode(self, extension, coverageId, lat, long, level, time, format, media, service='WCS', version='2.0.0'):
         """
-        @param extension: extensionNode
-        @param coverageId: coverageIdNode
-        @param lat, long, level, time: dimensionSliceNode or dimensionTrimNode
-        @param format: formatNode
-        @param media: mediaTypeNode
-        @param service, version: string
+        Args:
+
+        * extension: extensionNode
+
+        * coverageId: coverageIdNode
+
+        * lat, long, level, time: dimensionSliceNode or dimensionTrimNode
+
+        * format: formatNode
+
+        * media: mediaTypeNode
+
+        * service, version: string
+
         """
         xlinkAttr = self._mkAttribute('xmlns:xlink', self.xlink)
         wcsAttr = self._mkAttribute('xmlns:wcs', self.wcs)
@@ -523,7 +681,12 @@ class GetCoverageRequestWriter(dom.Document):
         return getCoverageNode
 
     def createExtensionNode(self, request):
-        """@param request: GetCoverageRequest"""
+        """
+        Args:
+
+        * request: GetCoverageRequest
+
+        """
         #rangeSubsetNode
         rangeComponentNodes = []
         for component in request.components:
@@ -546,14 +709,23 @@ class GetCoverageRequestWriter(dom.Document):
         return extensionNode
 
     def createCoverageIdNode(self, request):
-        """@param request: GetCoverageRequest"""
+        """
+        Args:
+
+        * request: GetCoverageRequest
+
+        """
         coverageIdNode = self.mkCoverageIdNode(request.coverageId)
         return coverageIdNode
 
     def _createDimNode(self, name, item):
         """
-        @param name: string
-        @param item: dict
+        Args:
+
+        * name: string
+
+        * item: dict
+
         """
         dimensionNode = self.mkDimensionNode(name)
         if item['type'] == 'trim':
@@ -567,31 +739,66 @@ class GetCoverageRequestWriter(dom.Document):
         return dimNode
 
     def createLatNode(self, request):
-        """@param request: GetCoverageRequest"""
+        """
+        Args:
+
+        * request: GetCoverageRequest
+
+        """
         return self._createDimNode('lat', request.lat)
 
     def createLongNode(self, request):
-        """@param request: GetCoverageRequest"""
+        """
+        Args:
+
+        * request: GetCoverageRequest
+
+        """
         return self._createDimNode('long', request.long)
 
     def createLevelNode(self, request):
-        """@param request: GetCoverageRequest"""
+        """
+        Args:
+
+        * request: GetCoverageRequest
+
+        """
         return self._createDimNode('IsobaricSurface', request.IsobaricSurface)
 
     def createTimeNode(self, request):
-        """@param request: GetCoverageRequest"""
+        """
+        Args:
+
+        * request: GetCoverageRequest
+
+        """
         return self._createDimNode('ValidityTime', request.ValidityTime)
 
     def createFormatNode(self, request):
-        """@param request: GetCoverageRequest"""
+        """
+        Args:
+
+        * request: GetCoverageRequest
+
+        """
         return self.mkFormatNode(request.format)
 
     def createMediaTypeNode(self, request):
-        """@param request: GetCoverageRequest"""
+        """
+        Args:
+
+        * request: GetCoverageRequest
+
+        """
         return self.mkMediaTypeNode(request.mediaType)
 
     def createGetCoverageNode(self, request):
-        """@param request: GetCoverageRequest"""
+        """
+        Args:
+
+        * request: GetCoverageRequest
+
+        """
         extension = self.createExtensionNode(request)
         coverageId = self.createCoverageIdNode(request)
         lat = self.createLatNode(request)
@@ -604,6 +811,11 @@ class GetCoverageRequestWriter(dom.Document):
                                       time, format, media)
 
     def returnXml(self, request):
-        """@param request: GetCoverageRequest"""
+        """
+        Args:
+
+        * request: GetCoverageRequest
+
+        """
         self.appendChild(self.createGetCoverageNode(request))
         return self.toxml()

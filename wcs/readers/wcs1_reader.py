@@ -16,12 +16,11 @@ def read_getCapabilities_res(xml_str):
         The xml as a string.
 
     returns
-        Coverage
+        CoverageList
 
     """
     reader = CapabilitiesReader(xml_str)
     return reader.get_coverages()
-
 
 def read_describeCoverage_res(xml_str):
     """
@@ -40,42 +39,9 @@ def read_describeCoverage_res(xml_str):
     reader = CoverageReader(xml_str)
     return reader.get_coverage()
 
-
-    # root = read_xml(xml_str)
-    # # For the describeCoverage xml, only one coverage element is returned under
-    # # the root.
-    # cov_elem = get_elements("CoverageOffering", root, single_elem=True,
-    #                         namespace=self.xmlns)
-    #
-    # name = get_elements_text("name", cov_elem, single_elem=True,
-    #                          namespace=self.xmlns)
-    # label = get_elements_text("label", cov_elem, single_elem=True,
-    #                           namespace=self.xmlns)
-    # bbox = get_bbox(cov_elem, namespace=namespace)
-    #
-    # dim_runs = get_axis_describer_values("DIM_RUN", cov_elem,
-    #                                      namespace=namespace)
-    # dim_forecasts = get_axis_describer_values("DIM_FORECAST", cov_elem,
-    #                                           namespace=namespace)
-    # times = get_axis_describer_values("TIME", cov_elem,
-    #                                   namespace=namespace)
-    # elevations = get_axis_describer_values("ELEVATION", cov_elem,
-    #                                        namespace=namespace)
-    # CRSs = get_elements_text("supportedCRSs/requestCRSs",
-    #                          cov_elem, namespace=namespace)
-    # formats = get_elements_text("supportedFormats/formats",
-    #                             cov_elem, namespace=namespace)
-    # interpolations = get_elements_text("supportedInterpolations/"\
-    #                                    "interpolationMethod",
-    #                                    cov_elem, namespace=namespace)
-    #
-    # return Coverage(name=name, label=label, bbox=bbox, dim_runs=dim_runs,
-    #                 dim_forecasts=dim_forecasts, times=times,
-    #                 elevations=elevations, CRSs=CRSs, formats=formats,
-    #                 interpolations=interpolations)
-
 class ResponseReader(object):
     """
+    Read XML returned from WCS1.
 
     """
     def __init__(self, xml_str):
@@ -99,15 +65,12 @@ class ResponseReader(object):
         return [float(lower_vals[0]), float(lower_vals[1]),
                 float(upper_vals[0]), float(upper_vals[1])]
 
-
 class CapabilitiesReader(ResponseReader):
     """
+    Read getCapabilities response.
 
     """
     def get_coverages(self):
-        """
-
-        """
         cov_elems = get_elements("ContentMetadata/CoverageOffering", self.root,
                                  namespace=self.xmlns)
         coverages = []
@@ -121,8 +84,11 @@ class CapabilitiesReader(ResponseReader):
 
         return CoverageList(coverages)
 
-
 class CoverageReader(ResponseReader):
+    """
+    Read describeCoverage response.
+
+    """
     def __init__(self, xml_str):
         super(CoverageReader, self).__init__(xml_str)
         # For the describeCoverage xml, only one coverage element is returned
@@ -188,16 +154,10 @@ class CoverageReader(ResponseReader):
         return []
 
     def get_name(self):
-        """
-
-        """
         return get_elements_text("name", self.root, single_elem=True,
                                  namespace=self.xmlns)
 
     def get_label(self):
-        """
-
-        """
         return get_elements_text("label", self.root, single_elem=True,
                                   namespace=self.xmlns)
 
@@ -214,58 +174,34 @@ class CoverageReader(ResponseReader):
         return self._get_bbox(self.root, self.xmlns)
 
     def get_dim_runs(self):
-        """
-
-        """
         return self._get_axis_describer_values("DIM_RUN", self.root,
                                                namespace=self.xmlns)
 
     def get_dim_forecasts(self):
-        """
-
-        """
         return self._get_axis_describer_values("DIM_FORECAST", self.root,
                                                namespace=self.xmlns)
 
     def get_times(self):
-        """
-
-        """
         return self._get_axis_describer_values("TIME", self.root,
                                                namespace=self.xmlns)
 
     def get_elevations(self):
-        """
-
-        """
         return self._get_axis_describer_values("ELEVATION", self.root,
                                                namespace=self.xmlns)
 
     def get_CRSs(self):
-        """
-
-        """
         return get_elements_text("supportedCRSs/requestCRSs", self.root,
                                  namespace=self.xmlns)
 
     def get_formats(self):
-        """
-
-        """
         return get_elements_text("supportedFormats/formats", self.root,
                                  namespace=self.xmlns)
 
     def get_interpolations(self):
-        """
-
-        """
         return get_elements_text("supportedInterpolations/interpolationMethod",
                                  self.root, namespace=self.xmlns)
 
     def get_coverage(self):
-        """
-
-        """
         name       = self.get_name()
         label      = self.get_label()
         bbox       = self.get_bbox()

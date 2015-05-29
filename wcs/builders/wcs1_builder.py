@@ -1,43 +1,40 @@
 """
-Can the checkers be used in wcs2_request_builder?
+Build appropriate requests for WCS1 requests.
 
 """
 from wcs.builders.param_checks import Checks
 
 def build_getCapabilities_req():
-    """
-
-    """
     return {"REQUEST" : "GetCapabilities"}
 
-def build_describeCoverage_req(coverageID):
-    """
-
-    """
+def build_describeCoverage_req(coverage_id):
     return {"REQUEST"  : "DescribeCoverage",
-            "COVERAGE" : coverageID}
+            "COVERAGE" : coverage_id}
 
-def build_getCoverage_req(coverageID, format=None, crs=None, elevation=None,
+def build_getCoverage_req(coverage_id, format=None, crs=None, elevation=None,
                           bbox=None, dim_run=None, time=None,
                           dim_forecast=None, width=None, height=None,
                           resx=None, resy=None, interpolation=None):
     """
-    Create a dictionary of valid parameters for getCoverage method. The
-    parameters format, crs and elevation must be specified for a valid
-    request. Use describeCoverage to print out avaiable options for these.
+    Create a dictionary of valid parameters for getCoverage method.
 
     Notes:
 
-    When specifing times; dim_run, time and dim_forecast cannot all be
-    given (even if they fit). Only a maximum of two can be specified.
+    When specifing times; dim_run, time and dim_forecast cannot all be given
+    (even if they fit). Only a maximum of two can be specified.
 
-    When specifying resolutions, width and height specify how many grid
-    boxes are returned, the size of the boxes is consequential. resx and
-    resy specify the size of the grid boxes and the number of grid boxes
-    is consequential. They can not be used together (even if the fit).
+    When specifying resolutions, width and height specify how many grid boxes
+    are returned, the size of the boxes is consequential. resx and resy specify
+    the size of the grid boxes and the number of grid boxes is consequential.
+    They can not be used together (even if the fit).
 
-    This method does not verify if the given parameters are available, it
+    This function does not verify if the given parameters are available, it
     only asserts correct formats.
+
+    Args:
+
+    * coverage_id: string
+        Name of the coverage.
 
     Kwargs:
 
@@ -67,7 +64,7 @@ def build_getCoverage_req(coverageID, format=None, crs=None, elevation=None,
     * dim_forecast: string
         The time releative to the dim_run e.g. PT36H is 36 hours from the
         model run time. Default is PT0H (unless dim_run AND time are
-        given). It is valid to provide just the number.
+        given).
 
     * width/height: integer
         The number of gridpoints in the x (width) and y (height) within
@@ -87,7 +84,7 @@ def build_getCoverage_req(coverageID, format=None, crs=None, elevation=None,
     """
     checker = Checks()
     param_dict  = {"REQUEST"  : "GetCoverage",
-                   "COVERAGE" : coverageID}
+                   "COVERAGE" : coverage_id}
 
     if format:
         param_dict["FORMAT"] = format

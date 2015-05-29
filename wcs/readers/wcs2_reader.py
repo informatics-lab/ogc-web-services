@@ -1,10 +1,23 @@
+"""
+Module containing functions for reading XML responses from WCS2 requests.
+
+"""
 from wcs.readers.xml_reader import get_elements, get_elements_text, \
                                    get_elements_attr, read_xml
 from wcs.coverage import Coverage, CoverageList, CoverageCollection
 
 def read_getCapabilities_res(xml_str):
     """
-    Return a CoverageList of all coverages in XML.
+    Extract all coverage information from xml (given as string) returned
+    by getCapabilities request and return as CoverageList object.
+
+    Args:
+
+    * xml_str: string
+        The xml as a string.
+
+    returns
+        CoverageList
 
     """
     reader = CapabilitiesReader(xml_str)
@@ -12,6 +25,16 @@ def read_getCapabilities_res(xml_str):
 
 def read_describeCoverageCollection_res(xml_str):
     """
+    Extract coverage collection information from xml (given as string) returned
+    by describeCoverageCollection request and return as Coverage object.
+
+    Args:
+
+    * xml_str: string
+        The xml as a string.
+
+    returns
+        Coverage
 
     """
     reader = CollectionReader(xml_str)
@@ -19,6 +42,16 @@ def read_describeCoverageCollection_res(xml_str):
 
 def read_describeCoverage_res(xml_str):
     """
+    Extract coverage information from xml (given as string) returned by
+    describeCoverage request and return as Coverage object.
+
+    Args:
+
+    * xml_str: string
+        The xml as a string.
+
+    returns
+        Coverage
 
     """
     reader = CoverageReader(xml_str)
@@ -27,6 +60,7 @@ def read_describeCoverage_res(xml_str):
 
 class ResponseReader(object):
     """
+    Read XML returned from WCS2.
 
     """
     def __init__(self, xml_str):
@@ -53,6 +87,10 @@ class ResponseReader(object):
 
     def _get_bbox(self, root):
         """
+        Extact the bounding spatial values and return in a list.
+
+        returns:
+            list
 
         """
         bbox_lower = get_elements_text("boundedBy/Envelope/lowerCorner",
@@ -65,12 +103,10 @@ class ResponseReader(object):
 
 class CapabilitiesReader(ResponseReader):
     """
+    Read getCapabilities response.
 
     """
     def get_address(self):
-        """
-
-        """
         op_meta_elem = get_elements("OperationsMetadata", self.root,
                                     single_elem=True, namespace=self.ows)
         op_elems = get_elements("Operation", op_meta_elem, namespace=self.ows)
@@ -80,9 +116,6 @@ class CapabilitiesReader(ResponseReader):
         return get_elements_attr("href", get_elem, namespace=self.xlink)
 
     def get_operations(self):
-        """
-
-        """
         op_meta_elem = get_elements("OperationsMetadata", self.root,
                                     single_elem=True, namespace=self.ows)
         op_elems = get_elements("Operation", op_meta_elem, namespace=self.ows)
@@ -90,18 +123,12 @@ class CapabilitiesReader(ResponseReader):
         return operations
 
     def get_coverage_ids(self):
-        """
-
-        """
         contents_elem = get_elements("Contents", self.root, single_elem=True,
                                      namespace=self.wcs)
         return get_elements_text("CoverageSummary/CoverageId", contents_elem,
                                  namespace=self.wcs)
 
     def _get_collection_summary_elems(self):
-        """
-
-        """
         extension_elem = get_elements("Contents/Extension", self.root,
                                       single_elem=True, namespace=self.wcs)
         col_summary_elems = get_elements("CoverageCollectionSummary",
@@ -110,17 +137,11 @@ class CapabilitiesReader(ResponseReader):
         return col_summary_elems
 
     def _get_collection_id(self, col_elem):
-        """
-
-        """
         return get_elements_text("coverageCollectionId", col_elem,
                                  single_elem=True,
                                  namespace=self.metocean)
 
     def _get_reference_times(self, root):
-        """
-
-        """
         ref_time_elem = get_elements("referenceTimeList/ReferenceTime",
                                      root, single_elem=True,
                                      namespace=self.metocean)
@@ -128,16 +149,10 @@ class CapabilitiesReader(ResponseReader):
                                  namespace=self.gml)
 
     def get_coverages(self):
-        """
-
-        """
         covs = self.get_coverage_ids()
         return CoverageList([Coverage(cov) for cov in covs])
 
     def get_coverage_collections(self):
-        """
-
-        """
         col_summary_elems = self._get_collection_summary_elems()
         cov_collections = []
         for col_elem in col_summary_elems:
@@ -150,6 +165,7 @@ class CapabilitiesReader(ResponseReader):
 
 class CollectionReader(ResponseReader):
     """
+    Read getCoverageCollection response.
 
     """
     def __init__(self, xml_str):
@@ -159,22 +175,13 @@ class CollectionReader(ResponseReader):
                                  single_elem=True, namespace=self.metocean)
 
     def get_collection_id(self):
-        """
-
-        """
         return get_elements_text("coverageCollectionId", self.root,
                                  single_elem=True, namespace=self.metocean)
 
     def get_bbox(self):
-        """
-
-        """
         return self._get_bbox(self.root)
 
     def get_ref_time(self):
-        """
-
-        """
         ref_time_elem = get_elements("referenceTime", self.root,
                                      single_elem=True,
                                      namespace=self.metocean)
@@ -182,9 +189,6 @@ class CollectionReader(ResponseReader):
                                  namespace=self.gml)
 
     def get_coverages(self):
-        """
-
-        """
         cov_ids_elem = get_elements("coverageIdList", self.root,
                                     single_elem=True,
                                     namespace=self.metocean)
@@ -194,9 +198,6 @@ class CollectionReader(ResponseReader):
 
 
     def get_coverage_collection(self):
-        """
-
-        """
         col_id = self.get_collection_id()
         col_bbox = self.get_bbox()
         col_ref_times = self.get_ref_time()
@@ -206,6 +207,7 @@ class CollectionReader(ResponseReader):
 
 class CoverageReader(ResponseReader):
     """
+    Read describeCoverage response.
 
     """
     def __init__(self, xml_str):
@@ -215,22 +217,13 @@ class CoverageReader(ResponseReader):
                                  single_elem=True, namespace=self.wcs)
 
     def get_coverage_name(self):
-        """
-
-        """
         return get_elements_text("CoverageId", self.root, single_elem=True,
                                  namespace=self.wcs)
 
     def get_bbox(self):
-        """
-
-        """
         return self._get_bbox(self.root)
 
     def get_ref_time(self):
-        """
-
-        """
         extension_elem = get_elements("metadata/Extension", self.root,
                                       single_elem=True, namespace=self.gmlcov)
         source_obs_elem = get_elements("extensionProperty/"\
@@ -246,9 +239,6 @@ class CoverageReader(ResponseReader):
                                  single_elem=True, namespace=self.gml)
 
     def get_coverage(self):
-        """
-
-        """
         cov_name = self.get_coverage_name()
         cov_bbox = self.get_bbox()
         cov_ref_time = self.get_ref_time()

@@ -1,36 +1,20 @@
+"""
+Send WCS1 requests.
+
+"""
 from wcs.builders.wcs1_builder import build_getCapabilities_req,  \
                                       build_describeCoverage_req, \
                                       build_getCoverage_req
-import requests
-
-def send_request(requester, payload, stream=False):
-    """
-    Add the given payload to the existing parameters, send request and
-    check response.
-
-    """
-    payload.update(requester.params)
-    response = requests.get(requester.url, params=payload, stream=stream)
-    return response
+from wcs.senders.sender import send_get_request
 
 def send_getCapabilities_req(requester):
-    """
-
-    """
     payload = build_getCapabilities_req()
-    return send_request(requester, payload)
+    return send_get_request(requester, payload)
 
-def send_describeCoverage_req(requester, coverageId):
-    """
+def send_describeCoverage_req(requester, coverage_id):
+    payload = build_describeCoverage_req(coverage_id)
+    return send_get_request(requester, payload)
 
-    """
-    payload = build_describeCoverage_req(coverageId)
-    return send_request(requester, payload)
-
-def send_getCoverage_req(requester, coverageID, **kwargs):
-    """
-
-    """
-    stream = kwargs.pop("stream")
-    payload = build_getCoverage_req(coverageID, **kwargs)
-    return send_request(requester, payload, stream=stream)
+def send_getCoverage_req(requester, coverage_id, stream=False, **kwargs):
+    payload = build_getCoverage_req(coverage_id, **kwargs)
+    return send_get_request(requester, payload, stream=stream)

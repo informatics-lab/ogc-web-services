@@ -1,5 +1,5 @@
 """
-Module for reading XML files returned by BDS requests.
+Module for reading XML files, tailored towards WCS responses.
 
 """
 import xml.etree.ElementTree as ET
@@ -22,6 +22,29 @@ def read_xml(xml_str):
     root = ET.fromstring(xml_str)
     check_xml(root, namespace=ERR_XMLNS)
     return root
+
+def check_xml(root, namespace=None):
+    """
+    Check the XML is not the error response.
+
+    Args:
+
+    * root: xml.etree.ElementTree.Element
+
+    Kwargs:
+
+    * namespace: string or None
+        The xml namespace for the given path.
+
+    """
+    if namespace:
+        error_tag = "{%s}ExceptionReport" % namespace
+    else:
+        error_tag = "ExceptionReport"
+    if root.tag.strip() == error_tag:
+        err_mess = get_elements_text("Exception/ExceptionText", root,
+                                     single_elem=True, namespace=namespace)
+        raise UserWarning(err_mess)
 
 def get_elements(path, root, single_elem=False, namespace=None):
     """
@@ -107,7 +130,7 @@ def get_elements_text(path, root, single_elem=False, namespace=None):
             elems_text = [txt for txt in elems_text if txt != ""]
             print "Warning! This is strange, {cnt} out of {tot} {path} "\
                   "elements contain text (normally its all or none!)."\
-                  "\nThe element(s) with no text have be removed."\
+                  "\nThe element(s) with no text have not been returned."\
                   .format(cnt=len(elems_text) - no_txt_count,
                           tot=len(elems_text),
                           path=path)
@@ -120,6 +143,20 @@ def get_elements_text(path, root, single_elem=False, namespace=None):
 def get_elements_attr(name, elem, namespace=None):
     """
     Return the value of the named attribute.
+
+    Args:
+
+    * name: string
+        The attribute name
+
+    * elem: xml.etree.ElementTree.Element
+        The elememt of the attribute.
+
+    Kwargs:
+
+    * namespace: string or None
+        The xml namespace for the given path.
+
 
     """
     if namespace:
@@ -135,23 +172,16 @@ def add_namespace(path, namespace):
     """
     Add namespace to each path element.
 
+    Args:
+
+    * path: string
+        The element path.
+
+    * namespace: string
+        The xml namespace for the given path.
+
     """
     namespace = "{%s}" % namespace
     path = path.split('/')
     path = [namespace + elem_name for elem_name in path]
     return "/".join(path)
-
-
-def check_xml(root, namespace=None):
-    """
-    Check the XML is not the error response
-
-    """
-    if namespace:
-        error_tag = "{%s}ExceptionReport" % namespace
-    else:
-        error_tag = "ExceptionReport"
-    if root.tag.strip() == error_tag:
-        err_mess = get_elements_text("Exception/ExceptionText", root,
-                                     single_elem=True, namespace=namespace)
-        raise UserWarning(err_mess)

@@ -3,9 +3,6 @@ Module of classes for holding and displaying information about coverages.
 
 """
 class InfoHolder(object):
-    """
-
-    """
     def _info_str(self, attr_name, as_list=False):
         """
         Format a single attribute for printing.
@@ -138,9 +135,6 @@ class CoverageList(object):
         return "\n".join(print_covs)
 
 class CoverageCollection(InfoHolder):
-    """
-
-    """
     def __init__(self, col_id=None, bbox=None, reference_times=None,
                  coverages=None):
         self.id   = col_id
