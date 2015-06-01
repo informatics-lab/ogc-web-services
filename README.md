@@ -3,7 +3,7 @@ Open Geospatial Consortium (OGC) defines open standards for retrieving
 geospatial data.
 http://www.opengeospatial.org/
 
-### wcs
+### webcoverageservice
 Web Coverage Service (WCS). Service for retrieving direct data.
 
 This is a Python wrapper for WCS requests.
