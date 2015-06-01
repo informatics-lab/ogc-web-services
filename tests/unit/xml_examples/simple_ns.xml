@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <Elems xmlns="test_namespace">
+        <elemOne>
+            <name>Element 1</name>
+            <value>1</value>
+        </elemOne>
+    </Elems>

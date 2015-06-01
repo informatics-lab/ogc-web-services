@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <Elems>
+        <elemOne>
+            <name>Element 1</name>
+            <value>1</value>
+        </elemOne>
+        <elemTwo>
+            <name>Element 2</name>
+            <values>
+                <singleValue>1</singleValue>
+                <singleValue>2</singleValue>
+                <singleValue>3</singleValue>
+            </values>
+        </elemTwo>
+        <elemThree>
+            <lonLatEnvelope>
+                <pos>-10 10</pos>
+                <pos>0 20</pos>
+            </lonLatEnvelope>
+        </elemThree>
+    </Elems>

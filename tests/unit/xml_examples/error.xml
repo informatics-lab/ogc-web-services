@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExceptionReport version="1.0" xmlns="http://www.opengis.net/ows" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/ows http://schemas.opengis.net/ows/1.0.0/owsExceptionReport.xsd">
+  <Exception exceptionCode="CoverageNotDefined">
+    <ExceptionText>Description of undefined coverage 'UKPPBEST_Temperatu' requested</ExceptionText>
+  </Exception>
+</ExceptionReport>

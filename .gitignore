@@ -1,0 +1,4 @@
+test*.*
+*.pyc
+develop
+.DS_Store

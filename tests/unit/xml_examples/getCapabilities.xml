@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WCS_Capabilities updateSequence="1428484373569" xmlns="http://www.opengis.net/wcs" xmlns:gml="http://www.opengis.net/gml" xsi:schemaLocation="http://www.opengis.net/wcs http://schemas.opengis.net/wcs/1.0.0/wcsCapabilities.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0">
+
+  <Service>
+    <name>UKPPBEST</name>
+    <label>UKPP Gridded Best data</label>
+    <fees>NONE</fees>
+    <accessConstraints>NONE</accessConstraints>
+  </Service>
+
+
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:type="simple" xlink:href="https://dataservices-beta.metoffice.gov.uk/services/UKPPBEST"/>
+            </Get>
+            <Post>
+              <OnlineResource xlink:type="simple" xlink:href="https://dataservices-beta.metoffice.gov.uk/services/UKPPBEST"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <DescribeCoverage>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:type="simple" xlink:href="https://dataservices-beta.metoffice.gov.uk/services/UKPPBEST"/>
+            </Get>
+            <Post>
+              <OnlineResource xlink:type="simple" xlink:href="https://dataservices-beta.metoffice.gov.uk/services/UKPPBEST"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </DescribeCoverage>
+      <GetCoverage>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:type="simple" xlink:href="https://dataservices-beta.metoffice.gov.uk/services/UKPPBEST"/>
+            </Get>
+            <Post>
+              <OnlineResource xlink:type="simple" xlink:href="https://dataservices-beta.metoffice.gov.uk/services/UKPPBEST"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetCoverage>
+    </Request>
+    <Exception>
+      <Format>application/vnd.ogc.se_xml</Format>
+      <Format>text/xml</Format>
+    </Exception>
+  </Capability>
+
+
+  <ContentMetadata>
+    <CoverageOffering>
+      <name>UKPPBEST_Cloud_base</name>
+      <label>Height of Cloud base</label>
+      <lonLatEnvelope>
+        <gml:pos>-14 47.5</gml:pos>
+        <gml:pos>7 61</gml:pos>
+      </lonLatEnvelope>
+      <keywords>
+        <keyword>UKMO</keyword>
+        <keyword>UKPP Best Gridded Data</keyword>
+      </keywords>
+    </CoverageOffering>
+    <CoverageOffering>
+      <name>UKPPBEST_Critical_snow_rate</name>
+      <label>Critical Snow rate</label>
+      <lonLatEnvelope>
+        <gml:pos>-14 47.5</gml:pos>
+        <gml:pos>7 61</gml:pos>
+      </lonLatEnvelope>
+      <keywords>
+        <keyword>UKMO</keyword>
+        <keyword>UKPP Best Gridded Data</keyword>
+      </keywords>
+    </CoverageOffering>
+    <CoverageOffering>
+      <name>UKPPBEST_Falling_Snow_Level</name>
+      <label>Falling Snow Level</label>
+      <lonLatEnvelope>
+        <gml:pos>-14 47.5</gml:pos>
+        <gml:pos>7 61</gml:pos>
+      </lonLatEnvelope>
+      <keywords>
+        <keyword>UKMO</keyword>
+        <keyword>UKPP Best Gridded Data</keyword>
+      </keywords>
+    </CoverageOffering>
+    <CoverageOffering>
+      <name>UKPPBEST_High_cloud_cover</name>
+      <label>High cloud cover</label>
+      <lonLatEnvelope>
+        <gml:pos>-14 47.5</gml:pos>
+        <gml:pos>7 61</gml:pos>
+      </lonLatEnvelope>
+      <keywords>
+        <keyword>UKMO</keyword>
+        <keyword>UKPP Best Gridded Data</keyword>
+      </keywords>
+    </CoverageOffering>
+    <CoverageOffering>
+      <name>UKPPBEST_Lightning_Rate</name>
+      <label>Lightning Rate</label>
+      <lonLatEnvelope>
+        <gml:pos>-14 47.5</gml:pos>
+        <gml:pos>7 61</gml:pos>
+      </lonLatEnvelope>
+      <keywords>
+        <keyword>UKMO</keyword>
+        <keyword>UKPP Best Gridded Data</keyword>
+      </keywords>
+    </CoverageOffering>
+    <CoverageOffering>
+      <name>UKPPBEST_Low_cloud_cover</name>
+      <label>Low cloud cover</label>
+      <lonLatEnvelope>
+        <gml:pos>-14 47.5</gml:pos>
+        <gml:pos>7 61</gml:pos>
+      </lonLatEnvelope>
+      <keywords>
+        <keyword>UKMO</keyword>
+        <keyword>UKPP Best Gridded Data</keyword>
+      </keywords>
+    </CoverageOffering>
+    <CoverageOffering>
+      <name>UKPPBEST_Medium_cloud_cover</name>
+      <label>Medium cloud cover</label>
+      <lonLatEnvelope>
+        <gml:pos>-14 47.5</gml:pos>
+        <gml:pos>7 61</gml:pos>
+      </lonLatEnvelope>
+      <keywords>
+        <keyword>UKMO</keyword>
+        <keyword>UKPP Best Gridded Data</keyword>
+      </keywords>
+    </CoverageOffering>
+    <CoverageOffering>
+      <name>UKPPBEST_Precipitation_rate</name>
+      <label>Precipitation rate</label>
+      <lonLatEnvelope>
+        <gml:pos>-14 47.5</gml:pos>
+        <gml:pos>7 61</gml:pos>
+      </lonLatEnvelope>
+      <keywords>
+        <keyword>UKMO</keyword>
+        <keyword>UKPP Best Gridded Data</keyword>
+      </keywords>
+    </CoverageOffering>
+    <CoverageOffering>
+      <name>UKPPBEST_Rain_Level</name>
+      <label>Rain Level</label>
+      <lonLatEnvelope>
+        <gml:pos>-14 47.5</gml:pos>
+        <gml:pos>7 61</gml:pos>
+      </lonLatEnvelope>
+      <keywords>
+        <keyword>UKMO</keyword>
+        <keyword>UKPP Best Gridded Data</keyword>
+      </keywords>
+    </CoverageOffering>
+    <CoverageOffering>
+      <name>UKPPBEST_Snow_Depth</name>
+      <label>Snow Depth</label>
+      <lonLatEnvelope>
+        <gml:pos>-14 47.5</gml:pos>
+        <gml:pos>7 61</gml:pos>
+      </lonLatEnvelope>
+      <keywords>
+        <keyword>UKMO</keyword>
+        <keyword>UKPP Best Gridded Data</keyword>
+      </keywords>
+    </CoverageOffering>
+    <CoverageOffering>
+      <name>UKPPBEST_Snow_Fraction</name>
+      <label>Snow Depth</label>
+      <lonLatEnvelope>
+        <gml:pos>-14 47.5</gml:pos>
+        <gml:pos>7 61</gml:pos>
+      </lonLatEnvelope>
+      <keywords>
+        <keyword>UKMO</keyword>
+        <keyword>UKPP Best Gridded Data</keyword>
+      </keywords>
+    </CoverageOffering>
+    <CoverageOffering>
+      <name>UKPPBEST_Temperature</name>
+      <label>Temperature [C]</label>
+      <lonLatEnvelope>
+        <gml:pos>-14 47.5</gml:pos>
+        <gml:pos>7 61</gml:pos>
+      </lonLatEnvelope>
+      <keywords>
+        <keyword>UKMO</keyword>
+        <keyword>UKPP Best Gridded Data</keyword>
+        <keyword>temperature</keyword>
+        <keyword>celsius</keyword>
+      </keywords>
+    </CoverageOffering>
+    <CoverageOffering>
+      <name>UKPPBEST_Total_Precipitation</name>
+      <label>Total Precipitation</label>
+      <lonLatEnvelope>
+        <gml:pos>-14 47.5</gml:pos>
+        <gml:pos>7 61</gml:pos>
+      </lonLatEnvelope>
+      <keywords>
+        <keyword>UKMO</keyword>
+        <keyword>UKPP Best Gridded Data</keyword>
+      </keywords>
+    </CoverageOffering>
+    <CoverageOffering>
+      <name>UKPPBEST_Total_cloud_cover</name>
+      <label>Total cloud cover</label>
+      <lonLatEnvelope>
+        <gml:pos>-14 47.5</gml:pos>
+        <gml:pos>7 61</gml:pos>
+      </lonLatEnvelope>
+      <keywords>
+        <keyword>UKMO</keyword>
+        <keyword>UKPP Best Gridded Data</keyword>
+      </keywords>
+    </CoverageOffering>
+    <CoverageOffering>
+      <name>UKPPBEST_Visibility</name>
+      <label>Visibility</label>
+      <lonLatEnvelope>
+        <gml:pos>-14 47.5</gml:pos>
+        <gml:pos>7 61</gml:pos>
+      </lonLatEnvelope>
+      <keywords>
+        <keyword>UKMO</keyword>
+        <keyword>UKPP Best Gridded Data</keyword>
+      </keywords>
+    </CoverageOffering>
+    <CoverageOffering>
+      <name>UKPPBEST_Wind_Direction</name>
+      <label>Wind Direction</label>
+      <lonLatEnvelope>
+        <gml:pos>-14 47.5</gml:pos>
+        <gml:pos>7 61</gml:pos>
+      </lonLatEnvelope>
+      <keywords>
+        <keyword>UKMO</keyword>
+        <keyword>UKPP Best Gridded Data</keyword>
+      </keywords>
+    </CoverageOffering>
+    <CoverageOffering>
+      <name>UKPPBEST_Wind_Gust_Speed</name>
+      <label>Wind Gust Speed</label>
+      <lonLatEnvelope>
+        <gml:pos>-14 47.5</gml:pos>
+        <gml:pos>7 61</gml:pos>
+      </lonLatEnvelope>
+      <keywords>
+        <keyword>UKMO</keyword>
+        <keyword>UKPP Best Gridded Data</keyword>
+      </keywords>
+    </CoverageOffering>
+    <CoverageOffering>
+      <name>UKPPBEST_Wind_Speed</name>
+      <label>Wind Speed</label>
+      <lonLatEnvelope>
+        <gml:pos>-14 47.5</gml:pos>
+        <gml:pos>7 61</gml:pos>
+      </lonLatEnvelope>
+      <keywords>
+        <keyword>UKMO</keyword>
+        <keyword>UKPP Best Gridded Data</keyword>
+      </keywords>
+    </CoverageOffering>
+  </ContentMetadata>
+</WCS_Capabilities>
