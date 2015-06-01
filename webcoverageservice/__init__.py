@@ -4,10 +4,8 @@ service (WCS).
 
 """
 import requests
-import dateutil.parser
-import iris
-from boto.s3.connection import S3Connection, Location
 from webcoverageservice.readers import wcs1_reader, wcs2_reader
+from webcoverageservice.readers.xml_reader import read_xml
 from webcoverageservice.senders import wcs1_sender, wcs2_sender
 
 class _Requester(object):
@@ -80,7 +78,7 @@ class _Requester(object):
         if response.headers["content-type"] == 'text/xml':
             xml_str = response.text
             # This function checks for an error XML response.
-            self.response_reader.read_xml(xml_str)
+            read_xml(xml_str)
             # If read_xml does not detect an error XML something has gone
             # wrong.
 

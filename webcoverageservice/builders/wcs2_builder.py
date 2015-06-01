@@ -3,7 +3,7 @@ Build appropriate requests for WCS2 requests.
 
 """
 import xml.dom.minidom as dom
-from webcoverageservice.builders.param_checks import Checks
+from webcoverageservice.builders import param_checks as checker
 
 def build_getCapabilities_req():
     return {"REQUEST" : "GetCapabilities"}
@@ -75,7 +75,6 @@ def build_getCoverage_req(coverage_id, components, format=None, elevation=None,
 
     """
     req = GetCoverageRequestBuilder()
-    checker = Checks()
 
     req.setCoverageId(coverage_id)
     if isinstance(components, string):

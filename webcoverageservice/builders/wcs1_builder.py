@@ -2,7 +2,7 @@
 Build appropriate requests for WCS1 requests.
 
 """
-from webcoverageservice.builders.param_checks import Checks
+from webcoverageservice.builders import param_checks as checker
 
 def build_getCapabilities_req():
     return {"REQUEST" : "GetCapabilities"}
@@ -82,7 +82,6 @@ def build_getCoverage_req(coverage_id, format=None, crs=None, elevation=None,
         dictionary
 
     """
-    checker = Checks()
     param_dict  = {"REQUEST"  : "GetCoverage",
                    "COVERAGE" : coverage_id}
 

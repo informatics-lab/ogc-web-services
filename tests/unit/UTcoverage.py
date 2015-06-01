@@ -1,12 +1,13 @@
 import unittest
-from BDS.coverage import Coverage, CoverageList
+from webcoverageservice.coverage import Coverage, CoverageList, \
+                                        CoverageCollection
 
 class Test_Coverage(unittest.TestCase):
     def test_print_info(self):
-        cov = Coverage(name="name2", bbox=[1,2,3,4])
+        cov = Coverage(name="test_name", bbox=[1,2,3,4])
         # Test _info_str() method which feeds print_info().
         self.assertEqual(cov._info_str("name"),
-                         "*** NAME ***\nname2\n\n")
+                         "*** NAME ***\ntest_name\n\n")
         self.assertEqual(cov._info_str("bbox", as_list=True),
                          "*** BBOX ***\n1, 2, 3, 4\n\n")
 
@@ -35,6 +36,15 @@ class Test_CoverageList(unittest.TestCase):
         joined_covs = CoverageList(self.covs[:1]) + CoverageList(self.covs[1:])
         self.assertEqual(joined_covs.coverage_list,
                          CoverageList(self.covs).coverage_list)
+
+class Test_CoverageCollection(unittest.TestCase):
+    def test_print_info(self):
+        cov = CoverageCollection(col_id="test_id", bbox=[1,2,3,4])
+        # Test _info_str() method which feeds print_info().
+        self.assertEqual(cov._info_str("id"),
+                         "*** ID ***\ntest_id\n\n")
+        self.assertEqual(cov._info_str("bbox", as_list=True),
+                         "*** BBOX ***\n1, 2, 3, 4\n\n")
 
 
 if __name__ == '__main__':

@@ -3,7 +3,8 @@ Send WCS1 requests.
 
 """
 from webcoverageservice.builders.wcs1_builder import \
-     build_getCapabilities_req, build_describeCoverage_req, \
+     build_getCapabilities_req,                      \
+     build_describeCoverage_req,                     \
      build_getCoverage_req
 from webcoverageservice.senders.sender import send_get_request
 
