@@ -2,9 +2,11 @@
 Module containing functions for reading XML responses from WCS2 requests.
 
 """
-from wcs.readers.xml_reader import get_elements, get_elements_text, \
-                                   get_elements_attr, read_xml
-from wcs.coverage import Coverage, CoverageList, CoverageCollection
+from webcoverageservice.readers.xml_reader import get_elements, \
+                                                  get_elements_text, \
+                                                  get_elements_attr, read_xml
+from webcoverageservice.coverage import Coverage, CoverageList, \
+                                        CoverageCollection
 
 def read_getCapabilities_res(xml_str):
     """

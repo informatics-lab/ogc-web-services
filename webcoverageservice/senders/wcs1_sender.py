@@ -2,10 +2,10 @@
 Send WCS1 requests.
 
 """
-from wcs.builders.wcs1_builder import build_getCapabilities_req,  \
-                                      build_describeCoverage_req, \
-                                      build_getCoverage_req
-from wcs.senders.sender import send_get_request
+from webcoverageservice.builders.wcs1_builder import \
+     build_getCapabilities_req, build_describeCoverage_req, \
+     build_getCoverage_req
+from webcoverageservice.senders.sender import send_get_request
 
 def send_getCapabilities_req(requester):
     payload = build_getCapabilities_req()

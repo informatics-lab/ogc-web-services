@@ -2,10 +2,9 @@
 Send WCS2 requests.
 
 """
-from wcs.builders.wcs2_builder import build_getCapabilities_req,            \
-                                      build_describeCoverageCollection_req, \
-                                      build_describeCoverage_req,           \
-                                      build_getCoverage_req
+from webcoverageservice.builders.wcs2_builder import \
+     build_getCapabilities_req, build_describeCoverageCollection_req, \
+     build_describeCoverage_req, build_getCoverage_req
 from wcs.senders.sender import send_get_request, send_post_request
 
 def send_getCapabilities_req(requester):

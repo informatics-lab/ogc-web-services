@@ -3,7 +3,7 @@ Build appropriate requests for WCS2 requests.
 
 """
 import xml.dom.minidom as dom
-from wcs.builders.param_checks import Checks
+from webcoverageservice.builders.param_checks import Checks
 
 def build_getCapabilities_req():
     return {"REQUEST" : "GetCapabilities"}

@@ -2,7 +2,7 @@
 Build appropriate requests for WCS1 requests.
 
 """
-from wcs.builders.param_checks import Checks
+from webcoverageservice.builders.param_checks import Checks
 
 def build_getCapabilities_req():
     return {"REQUEST" : "GetCapabilities"}

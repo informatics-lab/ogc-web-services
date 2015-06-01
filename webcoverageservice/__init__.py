@@ -7,8 +7,8 @@ import requests
 import dateutil.parser
 import iris
 from boto.s3.connection import S3Connection, Location
-from wcs.readers import wcs1_reader, wcs2_reader
-from wcs.senders import wcs1_sender, wcs2_sender
+from webcoverageservice.readers import wcs1_reader, wcs2_reader
+from webcoverageservice.senders import wcs1_sender, wcs2_sender
 
 class _Requester(object):
     """
