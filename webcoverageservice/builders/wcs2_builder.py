@@ -14,8 +14,7 @@ def build_describeCoverageCollection_req(collection_id, ref_time):
             "ReferenceTime" : ref_time}
 
 def build_describeCoverage_req(coverage_id):
-    return """
-    <?xml version="1.0" encoding="UTF-8"?>
+    xml = """<?xml version="1.0" encoding="UTF-8"?>
         <DescribeCoverage xmlns="http://www.opengis.net/wcs/2.0"
                           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                           xsi:schemaLocation="http://www.opengis.net/wcs/2.0
@@ -23,6 +22,7 @@ def build_describeCoverage_req(coverage_id):
                           service="WCS" version="2.0.0">
             <CoverageId>{cov_id}</CoverageId>
         </DescribeCoverage>""".format(cov_id=coverage_id)
+    return xml
 
 def build_getCoverage_req(coverage_id, components, format=None, elevation=None,
                           bbox=None, time=None, width=None, height=None,

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wcs:CoverageDescriptions xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ows="http://www.opengis.net/ows/2.0" xmlns:wcs="http://www.opengis.net/wcs/2.0" xmlns:swe="http://www.opengis.net/swe/2.0" xmlns:gmlcov="http://www.opengis.net/gmlcov/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:om="http://www.opengis.net/om/2.0" xmlns:metocean="http://def.wmo.int/metce/2013/metocean" xmlns:metce="http://def.wmo.int/metce/2013" xmlns:sam="http://www.opengis.net/sampling/2.0" xmlns:sams="http://www.opengis.net/samplingSpatial/2.0" xmlns:gmlrgrid="http://www.opengis.net/gml/3.3/rgrid" xsi:schemaLocation="http://schemas.opengis.net/wcs/2.0 http://schemas.opengis.net/wcs/2.0/wcsAll.xsd http://def.wmo.int/metce/2013/metocean https://dataservices-beta.metoffice.gov.uk/schemas/wcs-2.0/wcsMetOceanDescribeCoverage.xsd">
+  <wcs:CoverageDescription gml:id="UKPPBEST_Latest_Atmosphere">
+    <gml:boundedBy>
+      <gml:Envelope srsName="CRS:84" axisLabels="Long Lat" uomLabels="deg deg" srsDimension="2">
+        <gml:lowerCorner>-14 47.5</gml:lowerCorner>
+        <gml:upperCorner>7 61</gml:upperCorner>
+      </gml:Envelope>
+    </gml:boundedBy>
+    <wcs:CoverageId>UKPPBEST_Latest_Atmosphere</wcs:CoverageId>
+    <gmlcov:metadata>
+      <gmlcov:Extension>
+        <metocean:extensionProperty>
+          <metocean:MetOceanCoverageMetadata>
+            <metocean:sourceObservationProperty>
+              <metocean:SourceObservation gml:id="so_UKPPBEST_Latest_Atmosphere">
+                <om:phenomenonTime>
+                  <gml:TimePeriod gml:id="tp_ForecastTimeRange_UKPPBEST_Latest_Atmosphere">
+                    <gml:beginPosition>2015-06-03T09:00:00Z</gml:beginPosition>
+                    <gml:endPosition>2015-06-08T09:00:00Z</gml:endPosition>
+                  </gml:TimePeriod>
+                </om:phenomenonTime>
+                <om:resultTime nilReason="unknown"/>
+                <om:procedure nilReason="inapplicable"/>
+                <om:parameter>
+                  <om:NamedValue>
+                    <om:name xlink:href="http://www.codes.wmo.int/GRIB2/table1.2/referenceTime"/>
+                    <om:value>
+                      <gml:TimeInstant gml:id="referencetime_UKPPBEST_Latest_Atmosphere">
+                        <gml:timePosition>2015-06-03T09:00:00Z</gml:timePosition>
+                      </gml:TimeInstant>
+                    </om:value>
+                  </om:NamedValue>
+                </om:parameter>
+                <om:observedProperty xlink:href="http://codes.wmo.int/common/observation-type/METCE/2013/NWP_Model"/>
+                <om:featureOfInterest>
+                  <sams:SF_SpatialSamplingFeature gml:id="ss_UKPPBEST_Latest_Atmosphere">
+                    <sam:type xlink:href="http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingSurface"/>
+                    <sam:sampledFeature>
+                      <metocean:ModelDescription gml:id="uuid.md_UKPPBEST_Latest_Atmosphere">
+                        <gml:identifier codeSpace="urn:uuid:">md_UKPPBEST_Latest_Atmosphere</gml:identifier>
+                        <metocean:originatingcentre>unknown</metocean:originatingcentre>
+                        <metocean:modeltype>atmospheric</metocean:modeltype>
+                        <metocean:modelidentifier>UKPPBEST</metocean:modelidentifier>
+                        <metocean:geometryComponent>
+                          <metocean:ModelDomain>
+                            <metocean:horizontalProjection>
+                              <gml:Polygon gml:id="boundary-geometry_UKPPBEST_Latest_Atmosphere" uomLabels="deg deg" axisLabels="Lat Lon" srsDimension="2" srsName="http://www.opengis.net/def/crs/EPSG/0/4326">
+                                <gml:exterior>
+                                  <gml:LinearRing>
+                                    <gml:posList>47.5 -14 61 -14 61 7 47.5 7 47.5 -14</gml:posList>
+                                  </gml:LinearRing>
+                                </gml:exterior>
+                              </gml:Polygon>
+                            </metocean:horizontalProjection>
+                          </metocean:ModelDomain>
+                        </metocean:geometryComponent>
+                      </metocean:ModelDescription>
+                    </sam:sampledFeature>
+                    <sams:shape xlink:href="ss_UKPPBEST_Latest_Atmosphere"/>
+                  </sams:SF_SpatialSamplingFeature>
+                </om:featureOfInterest>
+                <om:result/>
+              </metocean:SourceObservation>
+            </metocean:sourceObservationProperty>
+            <metocean:dataMaskReferenceProperty>
+              <metocean:DataMaskReferenceMemberList>
+                <metocean:dataMaskReference fieldName="Total_cloud_cover" xlink:href="#maskId_UKPPBEST_Latest_Atmosphere_1">maskId_UKPPBEST_Latest_Atmosphere_1</metocean:dataMaskReference>
+              </metocean:DataMaskReferenceMemberList>
+            </metocean:dataMaskReferenceProperty>
+            <metocean:dataMaskProperty>
+              <metocean:DataMaskMemberList>
+                <metocean:dataMask maskName="Total_cloud_cover" gml:id="maskId_UKPPBEST_Latest_Atmosphere_1">
+                  <gmlcov:ReferenceableGridCoverage gml:id="rgc_maskId_UKPPBEST_Latest_Atmosphere_1">
+                    <gml:boundedBy>
+                      <gml:Envelope srsName="CRS:84" axisLabels="Long Lat" uomLabels="deg deg" srsDimension="2">
+                        <gml:lowerCorner>-14 47.5</gml:lowerCorner>
+                        <gml:upperCorner>7 61</gml:upperCorner>
+                      </gml:Envelope>
+                    </gml:boundedBy>
+                    <gml:domainSet>
+                      <gmlrgrid:ReferenceableGridByArray gml:id="rgba_maskId_UKPPBEST_Latest_Atmosphere_1" dimension="1" srsName="http://www.opengis.net/def/temporal/ISO8601" axisLabels="time" uomLabels="h">
+                        <gml:limits>
+                          <gml:GridEnvelope>
+                            <gml:low>0</gml:low>
+                            <gml:high>120</gml:high>
+                          </gml:GridEnvelope>
+                        </gml:limits>
+                        <gml:axisLabels>t</gml:axisLabels>
+                        <gml:posList>0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 51 54 57 60 63 66 69 72 75 78 81 84 87 90 93 96 99 102 105 108 111 114 117 120</gml:posList>
+                        <gmlrgrid:sequenceRule axisOrder="+1">Linear</gmlrgrid:sequenceRule>
+                      </gmlrgrid:ReferenceableGridByArray>
+                    </gml:domainSet>
+                    <gml:rangeSet>
+                      <gml:DataBlock>
+                        <gml:rangeParameters/>
+                        <gml:tupleList>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</gml:tupleList>
+                      </gml:DataBlock>
+                    </gml:rangeSet>
+                    <gmlcov:rangeType>
+                      <swe:DataRecord>
+                        <swe:field name="datacompletenessomission">
+                          <swe:Boolean>
+                            <swe:quality>
+                              <swe:Quantity>
+                                <swe:uom></swe:uom>
+                                <swe:constraint></swe:constraint>
+                                <swe:value>1.0</swe:value>
+                              </swe:Quantity>
+                            </swe:quality>
+                            <swe:nilValues>
+                              <swe:NilValues>
+                                <swe:nilValue reason="http://www.opengis.net/def/crs/EPSG/0/4326"/>
+                              </swe:NilValues>
+                            </swe:nilValues>
+                            <swe:value>0</swe:value>
+                          </swe:Boolean>
+                        </swe:field>
+                      </swe:DataRecord>
+                    </gmlcov:rangeType>
+                  </gmlcov:ReferenceableGridCoverage>
+                </metocean:dataMask>
+              </metocean:DataMaskMemberList>
+            </metocean:dataMaskProperty>
+          </metocean:MetOceanCoverageMetadata>
+        </metocean:extensionProperty>
+      </gmlcov:Extension>
+    </gmlcov:metadata>
+    <gml:domainSet>
+      <gml:RectifiedGrid dimension="2" gml:id="UKPPBEST_Latest_Atmosphere_grid">
+        <gml:limits>
+          <gml:GridEnvelope>
+            <gml:low>0 0</gml:low>
+            <gml:high>646 719</gml:high>
+          </gml:GridEnvelope>
+        </gml:limits>
+        <gml:axisName>x</gml:axisName>
+        <gml:axisName>y</gml:axisName>
+        <gml:origin>
+          <gml:Point srsName="EPSG:4326" gml:id="UKPPBEST_Latest_Atmosphere_grid_origin">
+            <gml:coordinates>-13.619999999999999 47.923999999999999</gml:coordinates>
+          </gml:Point>
+        </gml:origin>
+        <gml:offsetVector srsName="EPSG:4326">1.2179172073810853 -4.1763451043110793</gml:offsetVector>
+        <gml:offsetVector srsName="EPSG:4326">1.0664096202617264 -3.7343211980319291</gml:offsetVector>
+      </gml:RectifiedGrid>
+    </gml:domainSet>
+    <gmlcov:rangeType/>
+    <wcs:ServiceParameters>
+      <wcs:CoverageSubtype>RectifiedDataset</wcs:CoverageSubtype>
+      <wcs:nativeFormat>image/tiff</wcs:nativeFormat>
+    </wcs:ServiceParameters>
+  </wcs:CoverageDescription>
+</wcs:CoverageDescriptions>

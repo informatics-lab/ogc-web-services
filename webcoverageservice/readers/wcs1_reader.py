@@ -49,7 +49,8 @@ class ResponseReader(object):
         self.root  = read_xml(xml_str)
         self.xmlns = "http://www.opengis.net/wcs"
 
-    def _get_bbox(self, root, namespace=None):
+    @staticmethod
+    def _get_bbox(root, namespace=None):
         """
         There are two elements within the LonLatEnvelope element, the first is
         the longitude min and max, the second is the latitude. Extact this data
@@ -61,10 +62,10 @@ class ResponseReader(object):
         """
         lon_lat_elem = get_elements("lonLatEnvelope", root, single_elem=True,
                                     namespace=namespace)
-        lower_vals = lon_lat_elem[0].text.split()
-        upper_vals = lon_lat_elem[1].text.split()
-        return [float(lower_vals[0]), float(lower_vals[1]),
-                float(upper_vals[0]), float(upper_vals[1])]
+        lon_vals = lon_lat_elem[0].text.split()
+        lat_vals = lon_lat_elem[1].text.split()
+        return [float(lon_vals[0]), float(lat_vals[0]),
+                float(lon_vals[1]), float(lat_vals[1])]
 
 class CapabilitiesReader(ResponseReader):
     """
@@ -122,7 +123,7 @@ class CoverageReader(ResponseReader):
 
         """
         return get_elements_text("values/singleValue", root,
-                                 namespace=self.xmlns)
+                                 namespace=namespace)
 
     def _get_axis_describer_values(self, name, root, namespace=None):
         """
@@ -145,13 +146,13 @@ class CoverageReader(ResponseReader):
         """
         axis_elems = get_elements("rangeSet/RangeSet/axisDescription/"\
                                   "AxisDescription",
-                                  root, namespace=self.xmlns)
+                                  root, namespace=namespace)
         for axis_elem in axis_elems:
             elem_name = get_elements_text("name", root=axis_elem,
                                           single_elem=True,
-                                          namespace=self.xmlns)
+                                          namespace=namespace)
             if elem_name == name:
-                return self._get_values(axis_elem, namespace=self.xmlns)
+                return self._get_values(axis_elem, namespace=namespace)
         return []
 
     def get_name(self):

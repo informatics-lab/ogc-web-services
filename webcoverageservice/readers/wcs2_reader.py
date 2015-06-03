@@ -87,7 +87,7 @@ class ResponseReader(object):
         return [float(lower_vals[0]), float(lower_vals[1]),
                 float(upper_vals[0]), float(upper_vals[1])]
 
-    def _get_bbox(self, root):
+    def _get_bbox(self, root, namespace=None):
         """
         Extact the bounding spatial values and return in a list.
 
@@ -97,10 +97,10 @@ class ResponseReader(object):
         """
         bbox_lower = get_elements_text("boundedBy/Envelope/lowerCorner",
                                        root, single_elem=True,
-                                       namespace=self.gml)
+                                       namespace=namespace)
         bbox_upper = get_elements_text("boundedBy/Envelope/upperCorner",
                                        root, single_elem=True,
-                                       namespace=self.gml)
+                                       namespace=namespace)
         return self._bbox_as_list(bbox_lower, bbox_upper)
 
 class CapabilitiesReader(ResponseReader):
@@ -159,7 +159,7 @@ class CapabilitiesReader(ResponseReader):
         cov_collections = []
         for col_elem in col_summary_elems:
             col_id = self._get_collection_id(col_elem)
-            col_bbox = self._get_bbox(col_elem)
+            col_bbox = self._get_bbox(col_elem, namespace=self.gml)
             col_ref_times = self._get_reference_times(col_elem)
             cov_collections.append(CoverageCollection(col_id, col_bbox,
                                                       col_ref_times))
@@ -181,7 +181,7 @@ class CollectionReader(ResponseReader):
                                  single_elem=True, namespace=self.metocean)
 
     def get_bbox(self):
-        return self._get_bbox(self.root)
+        return self._get_bbox(self.root, namespace=self.gml)
 
     def get_ref_time(self):
         ref_time_elem = get_elements("referenceTime", self.root,
@@ -223,7 +223,7 @@ class CoverageReader(ResponseReader):
                                  namespace=self.wcs)
 
     def get_bbox(self):
-        return self._get_bbox(self.root)
+        return self._get_bbox(self.root, namespace=self.gml)
 
     def get_ref_time(self):
         extension_elem = get_elements("metadata/Extension", self.root,
