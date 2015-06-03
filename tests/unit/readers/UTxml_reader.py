@@ -17,7 +17,7 @@ def file_to_string(filename):
         file_str = infile.read()
     return file_str
 
-xml_example_dir = "tests/unit/readers/xml_examples/"
+xml_example_dir = "tests/unit/wcs1_xml_examples/"
 xml_simple    = file_to_string(xml_example_dir + "simple.xml")
 xml_simple_ns = file_to_string(xml_example_dir + "simple_ns.xml")
 xml_getCaps   = file_to_string(xml_example_dir + "getCapabilities.xml")
