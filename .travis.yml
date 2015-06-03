@@ -7,6 +7,7 @@ env:
         - secure: "aI1GiJ3Hubc3uMq01WdnV3iaF6wtm8rBjUiam45J8Z99Xe2xB/lGPyJfYfpWFN4BhcD4UoC2oneIwRu87zNW2cN+nCZ9ltY5/vfRJSY8ML3ndDQSUxR3TZ/jW8VN3pqHhh0/V7bEonAMrX8z/6RT/XMcohwDmCGe+zWK1xX9eeg="
         - secure: "Knz7E+RQTynPaMeU9KzK+LKemaPsXg6ReDQIaL9wcJYQnu2/S4wEbHQSEQZaUnqBNcCyzsxT3uivTlIjbMZmnT6/CGzEuvAZi0CNckExTuvi5GrSnlDh6O86tE9/CxlKo2M9fPcB3Ib2kO6T7OgMN0g4zBKtGQLmwjqYL1gywtY="
 install:
+    - export PYTHONPATH=$PYTHONPATH:/Users/simonstanley/miniconda/bin/:$(pwd)
     - pip install pylint
     - pip install -r requirements.txt
 script:
