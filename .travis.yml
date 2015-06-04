@@ -19,5 +19,4 @@ script:
     - python tests/unit/readers/UTxml_reader.py
     - python tests/unit/readers/UTwcs1_reader.py
     - python tests/unit/readers/UTwcs2_reader.py
-    - python tests/unit/UTxml_reader.py
     - pylint -E --disable=E1101 webcoverageservice
