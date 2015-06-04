@@ -77,7 +77,7 @@ def build_getCoverage_req(coverage_id, components, format=None, elevation=None,
     req = GetCoverageRequestBuilder()
 
     req.setCoverageId(coverage_id)
-    if isinstance(components, string):
+    if isinstance(components, str):
         components = [components]
     req.setComponents(*components)
 
@@ -112,11 +112,11 @@ def build_getCoverage_req(coverage_id, components, format=None, elevation=None,
 
     if width:
         width = checker.sort_grid_num(width)
-        rq.setInterpolation('Long', interpolation, samplesize=width)
+        req.setInterpolation('Long', interpolation, samplesize=width)
 
     if height:
         height = checker.sort_grid_num(height)
-        rq.setInterpolation('Lat', interpolation, samplesize=height)
+        req.setInterpolation('Lat', interpolation, samplesize=height)
 
     return req.toXML()
 

@@ -41,6 +41,17 @@ class _Requester(object):
                 self._check_api_key()
         self.api_key = api_key
 
+        if self.version == "1.0":
+            self.response_reader = wcs1_reader
+            self.request_sender  = wcs1_sender
+        elif self.version == "2.0.0":
+            self.response_reader = wcs2_reader
+            self.request_sender  = wcs2_sender
+        else:
+            self.response_reader = None
+            self.request_sender  = None
+
+
     def _check_api_key(self):
         """
         Send dummy request to BDS and check response.
@@ -187,8 +198,6 @@ class WCS1Requester(_Requester):
     def __init__(self, url, api_key=None, validate_api=False):
         super(WCS1Requester, self).__init__(url, "1.0", api_key,
                                             validate_api)
-        self.response_reader = wcs1_reader
-        self.request_sender  = wcs1_sender
 
     def getCoverage(self, coverage_id, format=None, crs=None, elevation=None,
                     bbox=None, dim_run=None, time=None, dim_forecast=None,
@@ -297,8 +306,6 @@ class WCS2Requester(_Requester):
     def __init__(self, url, api_key=None, validate_api=False):
         super(WCS2Requester, self).__init__(url, "2.0.0", api_key,
                                             validate_api)
-        self.response_reader = wcs2_reader
-        self.request_sender  = wcs2_sender
 
     def describeCoverageCollection(self, collection_id, ref_time, show=True,
                                    savepath=None):
