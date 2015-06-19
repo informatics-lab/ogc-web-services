@@ -19,7 +19,7 @@ def sort_grid_num(grid_num):
 
     """
     if not isinstance(grid_num, int):
-        err = ValueError("Width/height values must be integer like.")
+        err = ValueError("width/height values must be integer like.")
         if isinstance(grid_num, str):
             try:
                 grid_num = int(grid_num)
