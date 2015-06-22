@@ -403,7 +403,7 @@ class WCS2Requester(_Requester):
         """
         response = self.request_sender.send_getCoverage_req(self, coverage_id,
                         components, format=format, elevation=elevation,
-                        width=width, height=height,
+                        bbox=bbox,  time=time, width=width, height=height,
                         interpolation=interpolation, stream=stream)
         self._check_response_status(response)
         self._check_getCoverage_response(response)
