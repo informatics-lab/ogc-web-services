@@ -52,11 +52,13 @@ class Coverage(InfoHolder):
     name (and label), for example, UKPPBEST_High_cloud_cover.
 
     """
-    def __init__(self, name=None, label=None, bbox=None, dim_runs=None,
-                 dim_forecasts=None, times=None, elevations=None, CRSs=None,
-                 formats=None, interpolations=None):
+    def __init__(self, name=None, label=None, components=None, bbox=None,
+                 dim_runs=None, dim_forecasts=None, times=None,
+                 elevations=None, CRSs=None, formats=None,
+                 interpolations=None):
         self.name           = name
         self.label          = label
+        self.components     = components
         self.bbox           = bbox
         self.dim_runs       = dim_runs
         self.dim_forecasts  = dim_forecasts
@@ -66,7 +68,7 @@ class Coverage(InfoHolder):
         self.formats        = formats
         self.interpolations = interpolations
 
-        self.print_order = ["name", "label", "bbox", "dim_runs",
+        self.print_order = ["name", "label", "components", "bbox", "dim_runs",
                             "dim_forecasts", "times", "elevations",
                             "CRSs", "formats", "interpolations"]
 

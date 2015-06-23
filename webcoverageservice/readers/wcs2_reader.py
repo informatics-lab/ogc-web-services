@@ -222,6 +222,21 @@ class CoverageReader(ResponseReader):
         return get_elements_text("CoverageId", self.root, single_elem=True,
                                  namespace=self.wcs)
 
+    def get_components(self):
+        components = []
+        extension_elem = get_elements("metadata/Extension", self.root,
+                                      single_elem=True, namespace=self.gmlcov)
+        member_list_elems = get_elements("extensionProperty/"\
+                                         "MetOceanCoverageMetadata/"\
+                                         "dataMaskReferenceProperty/"\
+                                         "DataMaskReferenceMemberList/"\
+                                         "dataMaskReference",
+                                         extension_elem,
+                                         namespace=self.metocean)
+        for elem in member_list_elems:
+            components.append(get_elements_attr("fieldName", elem))
+        return components
+
     def get_bbox(self):
         return self._get_bbox(self.root, namespace=self.gml)
 
@@ -241,7 +256,9 @@ class CoverageReader(ResponseReader):
                                  single_elem=True, namespace=self.gml)
 
     def get_coverage(self):
-        cov_name = self.get_coverage_name()
-        cov_bbox = self.get_bbox()
+        cov_name   = self.get_coverage_name()
+        components = self.get_components()
+        cov_bbox   = self.get_bbox()
         cov_ref_time = self.get_ref_time()
-        return Coverage(name=cov_name, bbox=cov_bbox, dim_runs=cov_ref_time)
+        return Coverage(name=cov_name, components=components, bbox=cov_bbox,
+                        dim_runs=cov_ref_time)
