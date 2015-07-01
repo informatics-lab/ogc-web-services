@@ -92,7 +92,6 @@ class _Requester(object):
             read_xml(xml_str)
             # If read_xml does not detect an error XML something has gone
             # wrong.
-
             raise UserWarning("getCoverage has returned an XML file (not what"\
                               " we want) but the format is not recognised. "\
                               "Here it is to look at:\n%s" % xml_str)

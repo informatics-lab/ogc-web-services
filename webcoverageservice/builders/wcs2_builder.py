@@ -669,14 +669,9 @@ class GetCoverageRequestWriter(dom.Document):
         getCoverageNode = self.createElementNS(self.wcs, 'wcs:GetCoverage')
         for attr in attrs:
             getCoverageNode.setAttributeNode(attr)
-        getCoverageNode.appendChild(extension)
-        getCoverageNode.appendChild(coverageId)
-        getCoverageNode.appendChild(lat)
-        getCoverageNode.appendChild(long)
-        getCoverageNode.appendChild(level)
-        getCoverageNode.appendChild(time)
-        getCoverageNode.appendChild(format)
-        getCoverageNode.appendChild(media)
+        for arg in [extension, coverageId, lat, long, level, time, format, media]:
+            if arg is not None:
+                getCoverageNode.appendChild(arg)
         return getCoverageNode
 
     def createExtensionNode(self, request):
@@ -726,16 +721,21 @@ class GetCoverageRequestWriter(dom.Document):
         * item: dict
 
         """
-        dimensionNode = self.mkDimensionNode(name)
-        if item['type'] == 'trim':
-            trimLowNode = self.mkTrimLowNode(item['low'], item['unit'])
-            trimHighNode = self.mkTrimHighNode(item['high'], item['unit'])
-            dimNode = self.mkDimensionTrimNode(dimensionNode, trimLowNode,
-                                               trimHighNode)
+        if item is None:
+            return None
         else:
-            slicePointNode = self.mkSlicePointNode(item['value'], item['unit'])
-            dimNode = self.mkDimensionSliceNode(dimensionNode, slicePointNode)
-        return dimNode
+            dimensionNode = self.mkDimensionNode(name)
+            if item['type'] == 'trim':
+                trimLowNode = self.mkTrimLowNode(item['low'], item['unit'])
+                trimHighNode = self.mkTrimHighNode(item['high'], item['unit'])
+                dimNode = self.mkDimensionTrimNode(dimensionNode, trimLowNode,
+                                                   trimHighNode)
+            else:
+                slicePointNode = self.mkSlicePointNode(item['value'],
+                                                       item['unit'])
+                dimNode = self.mkDimensionSliceNode(dimensionNode,
+                                                    slicePointNode)
+            return dimNode
 
     def createLatNode(self, request):
         """
