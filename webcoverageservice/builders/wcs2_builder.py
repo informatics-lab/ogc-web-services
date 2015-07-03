@@ -53,7 +53,8 @@ def build_getCoverage_req(coverage_id, components, format=None, elevation=None,
         The format for the data to be returned in, e.g. NetCDF3
 
     * elevation: string or list
-        The veritcal level description.
+        The veritcal level description. If list of 2 values given they are
+        treated as bounds.
 
     * bbox: list
         Must contain 4 values in the format [x-min, y-min, x-max, y-max].
@@ -61,7 +62,8 @@ def build_getCoverage_req(coverage_id, components, format=None, elevation=None,
         entire field.
 
     * time: string or list
-        The forecast time.
+        The forecast time. If list of 2 values given they are treated as
+        bounds.
 
     * width/height: integer
         The number of gridpoints in the x (width) and y (height) within

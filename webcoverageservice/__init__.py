@@ -370,17 +370,18 @@ class WCS2Requester(_Requester):
         * format: string
             The format for the data to be returned in, e.g. NetCDF3
 
-        * elevation: string
-            The veritcal level description.
+        * elevation: string or list
+            The veritcal level description. If list of 2 values given they are
+            treated as bounds.
 
         * bbox: list
             Must contain 4 values in the format [x-min, y-min, x-max, y-max].
             Values can be given as integers, floats or strings. Default is the
             entire field is returned.
 
-        * time: string (date string, see dim_run)
-            The forecast time. Default is the first forecast time from the
-            dim_run (unless dim_run AND dim_forecast are given).
+        * time: string or list (date strings)
+            The forecast time. If list of 2 values given they are treated as
+            bounds.
 
         * width/height: integer
             The number of gridpoints in the x (width) and y (height) within
