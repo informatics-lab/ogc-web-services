@@ -346,10 +346,9 @@ class WCS2Requester(_Requester):
 
         return collection
 
-    def getCoverage(self, coverage_id, components, format=None,
-                    elevation=None, bbox=None, time=None, width=None,
-                    height=None, interpolation=None, stream=False,
-                    savepath=None):
+    def getCoverage(self, coverage_id, components, format=None, elevation=None,
+                    bbox=None, crs=None, time=None, width=None, height=None,
+                    interpolation=None, stream=False, savepath=None):
         """
         Send a request to URL for data specified by the components of a
         particular coverage ID, along with parameters. Note, this checks that
@@ -379,6 +378,9 @@ class WCS2Requester(_Requester):
             Values can be given as integers, floats or strings. Default is the
             entire field is returned.
 
+        * crs: string
+            The coordinate reference system for horizontal plain.
+
         * time: string or list (date strings)
             The forecast time. If list of 2 values given they are treated as
             bounds.
@@ -403,8 +405,9 @@ class WCS2Requester(_Requester):
         """
         response = self.request_sender.send_getCoverage_req(self, coverage_id,
                         components, format=format, elevation=elevation,
-                        bbox=bbox,  time=time, width=width, height=height,
-                        interpolation=interpolation, stream=stream)
+                        bbox=bbox,  crs=crs, time=time, width=width,
+                        height=height, interpolation=interpolation,
+                        stream=stream)
         self._check_response_status(response)
         self._check_getCoverage_response(response)
 

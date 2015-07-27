@@ -25,8 +25,8 @@ def build_describeCoverage_req(coverage_id):
     return xml
 
 def build_getCoverage_req(coverage_id, components, format=None, elevation=None,
-                          bbox=None, time=None, width=None, height=None,
-                          interpolation=None):
+                          crs=None, bbox=None, time=None, width=None,
+                          height=None, interpolation=None):
     """
     Create an XML document of valid parameters for getCoverage method.
 
@@ -55,6 +55,9 @@ def build_getCoverage_req(coverage_id, components, format=None, elevation=None,
     * elevation: string or list
         The veritcal level description. If list of 2 values given they are
         treated as bounds.
+
+    * crs: string
+        The coordinate reference system for horizontal plain.
 
     * bbox: list
         Must contain 4 values in the format [x-min, y-min, x-max, y-max].
@@ -91,6 +94,10 @@ def build_getCoverage_req(coverage_id, components, format=None, elevation=None,
             req.setLevelRange(elevation[0], elevation[1])
         else:
             req.setLevel(elevation)
+
+    if crs:
+        # crs1 refers to the coordinate reference sytem on the hrizontal plain.
+        req.setCRS("crs1", crs)
 
     if bbox:
         checker.check_bbox(bbox)

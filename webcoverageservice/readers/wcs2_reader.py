@@ -74,6 +74,8 @@ class ResponseReader(object):
         self.gmlcov   = "http://www.opengis.net/gmlcov/1.0"
         self.xlink    = "http://www.w3.org/1999/xlink"
         self.om       = "http://www.opengis.net/om/2.0"
+        self.sam      = "http://www.opengis.net/sampling/2.0"
+        self.sams     = "http://www.opengis.net/samplingSpatial/2.0"
 
     @staticmethod
     def _bbox_as_list(lower_vals, upper_vals):
@@ -255,10 +257,34 @@ class CoverageReader(ResponseReader):
         return get_elements_text("TimeInstant/timePosition", value_elem,
                                  single_elem=True, namespace=self.gml)
 
+    def get_crss(self):
+        extension_elem = get_elements("metadata/Extension", self.root,
+                                      single_elem=True, namespace=self.gmlcov)
+        source_obs_elem = get_elements("extensionProperty/"\
+                                       "MetOceanCoverageMetadata/"\
+                                       "sourceObservationProperty/"\
+                                       "SourceObservation", extension_elem,
+                                       single_elem=True,
+                                       namespace=self.metocean)
+        intrst_elem = get_elements("featureOfInterest", source_obs_elem,
+                                   single_elem=True, namespace=self.om)
+        SF_spatial_elem = get_elements("SF_SpatialSamplingFeature",
+                                       intrst_elem, single_elem=True,
+                                       namespace=self.sams)
+        sample_feat_elem = get_elements("sampledFeature", SF_spatial_elem,
+                                        single_elem=True, namespace=self.sam)
+        horzon_proj_elem = get_elements("ModelDescription/geometryComponent/"\
+                                        "ModelDomain/horizontalProjection",
+                                        sample_feat_elem, single_elem=True,
+                                        namespace=self.metocean)
+        poly_elem = get_elements("Polygon", horzon_proj_elem, single_elem=True,
+                                 namespace=self.gml)
+        return get_elements_attr("srsName", poly_elem)
+
     def get_coverage(self):
         cov_name   = self.get_coverage_name()
         components = self.get_components()
         cov_bbox   = self.get_bbox()
         cov_ref_time = self.get_ref_time()
         return Coverage(name=cov_name, components=components, bbox=cov_bbox,
-                        dim_runs=cov_ref_time)
+                        CRSs=cov_crss, dim_runs=cov_ref_time)
