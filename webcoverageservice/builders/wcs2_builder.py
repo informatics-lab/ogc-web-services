@@ -96,7 +96,7 @@ def build_getCoverage_req(coverage_id, components, format=None, elevation=None,
             req.setLevel(elevation)
 
     if crs:
-        # crs1 refers to the coordinate reference sytem on the hrizontal plain.
+        # crs1 refers to the coordinate reference sytem on the horizontal plain.
         req.setCRS("crs1", crs)
 
     if bbox:
@@ -367,9 +367,9 @@ class GetCoverageRequestWriter(dom.Document):
         self.xsi = "http://www.w3.org/2001/XMLSchema-instance"
         self.metocean = "http://def.wmo.int/metce/2013/metocean"
 
-        self.crs0 = "http://www.opengis.net/def/crs-combine?"
-        self.crs1 = "http://www.opengis.net/def/crs/EPSG/0/4326&amp;"
-        self.crs2 = "http://www.codes.wmo.int/GRIB2/table4.5/IsobaricSurface&amp;"
+        self.crs0 = "http://www.opengis.net/def/crs-combine"
+        self.crs1 = "http://www.opengis.net/def/crs/EPSG/0/4326"
+        self.crs2 = "http://www.codes.wmo.int/GRIB2/table4.5/IsobaricSurface"
         self.crs3 = "http://www.opengis.net/def/temporal/ISO8601"
 
     def _mkAttribute(self, name, value):
@@ -416,14 +416,12 @@ class GetCoverageRequestWriter(dom.Document):
         * crs#: string or None
 
         """
-        crsstring = ""
-        crsstring += crs0 if crs0!=None else self.crs0
-        crsstring += '\n1='
-        crsstring += crs1 if crs1!=None else self.crs1
-        crsstring += '\n2='
-        crsstring += crs2 if crs2!=None else self.crs2
-        crsstring += '\n3='
-        crsstring += crs3 if crs3!=None else self.crs3
+        crsstring = "{crs0}? 1={crs1}& 2={crs2}& 3={crs3}".format(
+                    crs0=crs0 if crs0!=None else self.crs0,
+                    crs1=crs1 if crs1!=None else self.crs1,
+                    crs2=crs2 if crs2!=None else self.crs2,
+                    crs3=crs3 if crs3!=None else self.crs3)
+
         crsNode = self.createTextNode(crsstring)
         subsettingCrsNode = self.createElementNS(self.wcsCRS, 'wcsCRS:subsettingCrs')
         subsettingCrsNode.appendChild(crsNode)

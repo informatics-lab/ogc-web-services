@@ -286,5 +286,6 @@ class CoverageReader(ResponseReader):
         components = self.get_components()
         cov_bbox   = self.get_bbox()
         cov_ref_time = self.get_ref_time()
+        cov_crss   = self.get_crss()
         return Coverage(name=cov_name, components=components, bbox=cov_bbox,
-                        dim_runs=cov_ref_time)
+                        CRSs=cov_crss, dim_runs=cov_ref_time)
