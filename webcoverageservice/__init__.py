@@ -348,7 +348,8 @@ class WCS2Requester(_Requester):
 
     def getCoverage(self, coverage_id, components, format=None, elevation=None,
                     bbox=None, crs=None, time=None, width=None, height=None,
-                    interpolation=None, stream=False, savepath=None):
+                    interpolation=None, stream=False, savepath=None,
+                    savepath_xml_req=None):
         """
         Send a request to URL for data specified by the components of a
         particular coverage ID, along with parameters. Note, this checks that
@@ -397,7 +398,12 @@ class WCS2Requester(_Requester):
             downloaded.
 
         * savepath: string
-            Save the response to a given loaction.
+            Save the response to a given location.
+
+        * savepath_xml_req: string
+            Save the XML posted as request to given location. Note, this is
+            saved before XML is posted and hence before it is validated by the
+            WCS.
 
         returns
             requests.Response
@@ -407,7 +413,7 @@ class WCS2Requester(_Requester):
                         components, format=format, elevation=elevation,
                         bbox=bbox,  crs=crs, time=time, width=width,
                         height=height, interpolation=interpolation,
-                        stream=stream)
+                        stream=stream, savepath_xml_req=savepath_xml_req)
         self._check_response_status(response)
         self._check_getCoverage_response(response)
 

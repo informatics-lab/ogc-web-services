@@ -24,5 +24,11 @@ def send_describeCoverage_req(requester, coverage_id):
 
 def send_getCoverage_req(requester, coverage_id, components, stream=False,
                          **kwargs):
+    savepath_xml_req = kwargs.pop("savepath_xml_req")
     payload = build_getCoverage_req(coverage_id, components, **kwargs)
+
+    if savepath_xml_req is not None:
+        with open(savepath_xml_req, 'w') as outfile:
+            outfile.write(payload)
+
     return send_post_request(requester, payload, stream=stream)
