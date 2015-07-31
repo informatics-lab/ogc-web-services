@@ -142,7 +142,7 @@ class _Requester(object):
 
         Args:
 
-        * coverage_name: string
+        * coverage_id: string
             Available coverage names are printed by getCapabilities method.
 
         Kwargs:
