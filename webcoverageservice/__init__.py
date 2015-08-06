@@ -70,16 +70,16 @@ class _Requester(object):
         if status != 200:
             url_message = "Here's the url that was sent:\n%s" % response.url
             if status == 403:
-                raise UserWarning("403 Error, request forbidden. This is "\
+                raise RuntimeError("403 Error, request forbidden. This is "\
                                   "likely due to an incorrect API key, but "\
                                   "sometimes the service is temporarily "\
                                   "down. If you know your key is fine, try "\
                                   "again.\n%s" % url_message)
             elif status == 404:
-                raise UserWarning("404 Error, server not found.\n%s"\
+                raise RuntimeError("404 Error, server not found.\n%s"\
                                   % url_message)
             else:
-                raise UserWarning("%s Error\n%s" % (status, url_message))
+                raise RuntimeError("%s Error\n%s" % (status, url_message))
 
     def _check_getCoverage_response(self, response):
         """
@@ -92,7 +92,7 @@ class _Requester(object):
             read_xml(xml_str)
             # If read_xml does not detect an error XML something has gone
             # wrong.
-            raise UserWarning("getCoverage has returned an XML file (not what"\
+            raise RuntimeError("getCoverage has returned an XML file (not what"\
                               " we want) but the format is not recognised. "\
                               "Here it is to look at:\n%s" % xml_str)
 
